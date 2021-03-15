@@ -352,10 +352,11 @@
                                 <table id="tabla" class="table table-striped" <?php if(count($guia->detalles)==0):?> style="display:none" <?php endif?>>
                                     <thead>
                                         <tr>  
-                                            <th>Codigo</th>                                              
-                                            <th>Descripcion</th>                                                
-                                            <th>Cant.</th>
-                                            <th>Prec. Unit.</th>
+                                                    <th colspan="2">Codigo</th> 
+                                                    <th class="col-sm-2" style="display: none;">Unid. Medida</th>   
+                                                    <th>Descripcion</th>
+                                                    <th>Cant.</th>
+                                                    <th>Prec. Unit.</th>
                                         </tr>
                                     </thead>                    
                                     <tbody> 
@@ -371,6 +372,8 @@
                                     </tbody>                    
                                     </table>   
                                 <button type="button" id="agrega" class="btn btn-primary btn-sm">Agregar Item</button>
+                                <button type="button" id="agrega_sin" class="btn btn-warning btn-sm" onclick="agregar_fila_sin_stock()" style="background: #E67E22;border:0;">Agregar sin Stock</button>
+
                             </div> 
                         </div>            
                         <div id="mostrar"></div>
@@ -486,7 +489,7 @@
     $(function(){       
         var fila = '<tr class="cont-item">'; 
 
-                fila += '<td class="col-3"><input type="text" class="form-control" id="codigo" name="codigo" readonly></td>';
+                fila += '<td colspan="2" class="col-3"><input type="text" class="form-control" id="codigo" name="codigo" readonly></td>';
                 fila += '<td class="col-sm-3"><input type="text" class="form-control descripcion-item" rows="2" id="descripcion" name="descripcion[]"><div id="data_item"><input type="hidden" name="item_id[]" id="item_id"></div></td>';
                 fila += '<td class="col-3"><input type="number" id="cantidad" name="cantidad[]"  class="form-control cantidad" ></td>';
                 fila += '<td class="col-3"><input type="number" id="precio" name="precio[]"  class="form-control precio"  ></td>';
@@ -835,5 +838,33 @@
         }} else{         
              toast("error",3000, 'Ingrese número de documento de búsqueda');
         }
+    }
+
+         function agregar_fila_sin_stock(){
+       
+        var fila = '<tr class="cont-item">';
+
+         
+        fila += '<td class="col-3"><input type="text" class="form-control" id="codigo" name="codigo" readonly></td>';
+        fila += '<td class="col-sm-1" style="border:0;"><select class="form-control" id="medida" name="medida[]"><option value="">Seleccione</option>';
+                <?php foreach ($medida as $valor):?>
+                    fila += '<option value="<?php echo $valor->medida_id;?>"><?php echo $valor->medida_nombre;?></option>';  
+                <?php endforeach ?>
+                fila += '</select></td>'; 
+               fila += '<td class="col-sm-3" style="border:0;"> <textarea class="form-control" rows="2" id="descripcion" name="descripcion[]" required=""></textarea><div id="data_item"><input type="hidden" name="item_id[]" id="item_id" value="0"></div></td>';
+                fila += '<td class="col-3"><input type="number" id="cantidad" name="cantidad[]"  class="form-control cantidad" ></td>';
+                fila += '<td class="col-3"><input type="number" id="precio" name="precio[]"  class="form-control precio"  ></td>';
+                fila += '<td class="eliminar"><span class="glyphicon glyphicon-remove-circle"></span></td>';             
+                
+            fila += '</tr>';
+
+            $("#tabla").css("display","block");
+               $("#tabla tbody").append(fila);
+               calcular();                            
+               //Llamada Evento Chosen
+               $('.tipo_igv').chosen({                
+                   search_contains : true,
+                   no_results_text : 'No se encontraton estos tags',                
+               });  
     }
 </script>
