@@ -169,8 +169,9 @@ class Guias_model extends CI_Model
         $descripcion = $_POST['descripcion'];
         $precios = $_POST['precio'];
         $codigo = $_POST['codigo'];
+        $medida = $_POST['medida'];
 
-
+        $i = 0;
         foreach($productosId as $index => $item)
         {
           if($item!=0){
@@ -181,25 +182,44 @@ class Guias_model extends CI_Model
 
             if($precios[$index]==''){
               $precios[$index] = 0;
-            }  
+            } 
 
-          }else{}          
+          $dataInsertDetallee ['producto_id'] =$item;
+          $dataInsertDetallee['descripcion'] =$rsProducto->prod_nombre;
+          $dataInsertDetallee ['codigo'] =$rsProducto->prod_codigo;
+          $dataInsertDetallee ['cantidad'] =$cantidades[$index];
+          $dataInsertDetallee ['precio'] =$precios[$index];
+          $dataInsertDetallee ['guia_id'] =$idGuia;
+          $dataInsertDetallee ['medida_id']= $rsProducto->pro_medida_id;
 
-          $dataInsertDetalle = [
-                                    "producto_id"  => $item,
-                                    "descripcion"  => $rsProducto->prod_nombre,
-                                    "codigo"       => $rsProducto->prod_codigo,
-                                    "cantidad"     => $cantidades[$index],
-                                    "precio"     => $precios[$index],
-                                    "guia_id"      => $idGuia,
-                                  ];   
-          $this->db->insert("guia_detalles", $dataInsertDetalle);   
+          }else{       
+            $dataInsertDetallee ['producto_id'] =0;
+            $dataInsertDetallee['descripcion'] =strtoupper($descripcion[$i]);
+            $dataInsertDetallee ['codigo'] =0;
+            $dataInsertDetallee ['cantidad'] =$cantidades[$index];
+            $dataInsertDetallee ['precio'] =$precios[$index];
+            $dataInsertDetallee ['guia_id'] =$idGuia;
+            $dataInsertDetallee ['medida_id'] = $medida[$i];
+
+        }   
+
+   
+       //   $dataInsertDetalle = [
+         //                           "producto_id"  => $item,
+          //                          "descripcion"  => $rsProducto->prod_nombre,
+           //                         "codigo"       => $rsProducto->prod_codigo,
+            //                        "cantidad"     => $cantidades[$index],
+             //                         "precio"     => $precios[$index],
+              //                      "guia_id"      => $idGuia,
+          //                        ];   
+          $this->db->insert("guia_detalles", $dataInsertDetallee);   
 
           //DESCONTAR STOCK
           if($_POST['descontar_stock']==on){
               $concepto = 'MOVIMIENTO GUIA SALIDA';
               $this->productos_model->salidaStock($item, $cantidades[$index], $concepto, $idGuia,strtoupper($_POST['serie']),$_POST['numero']);
-          }    
+          }
+          $i++;    
         }
         return $idGuia;                    
     }

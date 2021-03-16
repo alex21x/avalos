@@ -20,7 +20,8 @@ class Guias extends CI_Controller
         $this->load->model('guias_model'); 
         $this->load->model('productos_model'); 
         $this->load->model('ubigeo_inei_model');
-        $this->load->helper('ayuda');        
+        $this->load->helper('ayuda');  
+        $this->load->model('medida_model');      
 
         $empleado_id = $this->session->userdata('empleado_id');
         $almacen_id = $this->session->userdata("almacen_id");
@@ -44,6 +45,7 @@ class Guias extends CI_Controller
         $data['modalidades'] = $this->guias_model->getModalidadTraslado();
         $data['ubigeo_inei'] = $this->ubigeo_inei_model->select();
         $data['tipo_clientes'] = $this->tipo_clientes_model->select();
+        $data['medida'] = $this->medida_model->select();
         $this->accesos_model->menuGeneral();
         $this->load->view('guias/nuevo', $data);
         $this->load->view('templates/footer');
@@ -222,7 +224,7 @@ class Guias extends CI_Controller
 
         $rsDetalle = $this->db->from("guia_detalles as guiad")
                               ->join("productos as prod", "prod.prod_id=guiad.producto_id","left")
-                              ->join("medida med", "prod.prod_medida_id=med.medida_id")
+                              ->join("medida med", "guiad.medida_id=med.medida_id")
                               ->where("guia_id", $idGuia)
                               ->get()
                               ->result();
