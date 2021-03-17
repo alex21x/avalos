@@ -190,7 +190,7 @@ class Guias_model extends CI_Model
           $dataInsertDetallee ['cantidad'] =$cantidades[$index];
           $dataInsertDetallee ['precio'] =$precios[$index];
           $dataInsertDetallee ['guia_id'] =$idGuia;
-          $dataInsertDetallee ['medida_id']= $rsProducto->pro_medida_id;
+          $dataInsertDetallee ['medida_id']= $rsProducto->prod_medida_id;
 
           }else{       
             $dataInsertDetallee ['producto_id'] =0;
@@ -202,7 +202,12 @@ class Guias_model extends CI_Model
             $dataInsertDetallee ['medida_id'] = $medida[$i];
 
         }   
-
+           //if ($i=2) {
+            // var_dump(expression)
+          // } else {
+             # code...
+          // }
+           
    
        //   $dataInsertDetalle = [
          //                           "producto_id"  => $item,
