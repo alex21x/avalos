@@ -108,7 +108,7 @@
                                <div class="col-sm-4" >
                                     <label># Factura - Boleta</label>
                                     <div class="input-group">
-                                        <input type="text" name="numero_factura" id="numero_factura" class="form-control" value="<?php echo $guia->numero_factura?>">
+                                        <input type="text" name="numero_factura" id="numero_factura" class="form-control" value="<?php echo $guia->numero_factura?>" readonly>
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" id="btn_buscar_factura"><i class="glyphicon glyphicon-search"></i></button>
                                         </span>
@@ -491,6 +491,7 @@
 
                 fila += '<td colspan="2" class="col-3"><input type="text" class="form-control" id="codigo" name="codigo" readonly></td>';
                 fila += '<td class="col-sm-3"><input type="text" class="form-control descripcion-item" rows="2" id="descripcion" name="descripcion[]"><div id="data_item"><input type="hidden" name="item_id[]" id="item_id"></div></td>';
+                fila += '<td style="border:0;display: none;"><input type="text" class="form-control" readonly id="medida" name="medida[]"></td>' 
                 fila += '<td class="col-3"><input type="number" id="cantidad" name="cantidad[]"  class="form-control cantidad" ></td>';
                 fila += '<td class="col-3"><input type="number" id="precio" name="precio[]"  class="form-control precio"  ></td>';
                 fila += '<td class="eliminar"><span class="glyphicon glyphicon-remove-circle"></span></td>';
@@ -754,7 +755,6 @@
                 $("#numero_factura").prop("readonly",false);
             }
     });
-
 
 
     $("#destinatario_ruc,#transporte_ruc,#conductor_ruc").on("blur",function(){

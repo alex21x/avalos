@@ -72,10 +72,7 @@ class Guias extends CI_Controller
     {
         //print_r($_POST['destinatario_documento']);exit();
         $error = array();
-        /*if($_POST['numero_factura'] == '')
-        {
-            $error['numero_factura'] = 'falta ingresar factura';
-        }*/
+
         if($_POST['motivo'] == '')
         {
             $error['motivo'] = 'falta ingresar motivo';
@@ -128,19 +125,37 @@ class Guias extends CI_Controller
             exit();
         }  
 
+
+        $descripcion = $_POST['descripcion'];
+        $medida = $_POST['medida'];        
         //verificamos que haya productos
         $tieneProductos = false;
         $msg = 'no hay productos agregados.';
+
+        $i = 0;
         foreach($_POST['item_id'] as $value)
         {
-            if($value!='')
+            if($value != '')
             {
-                $tieneProductos = true;
+                if($value == 0){//PRODUCTO SIN STOCK
+                    if($descripcion[$i] == ''){
+                       $tieneProductos = false;
+                       $msg = 'Ingrese descripción del producto.';break;
+                    } elseif ($medida[$i] == '') {                        
+                        $tieneProductos = false;
+                        $msg = 'Seleccione una unidad de medida.';
+                    } else{
+                        $tieneProductos = true;
+                    }  
+                }else{//PRODUCTO CON STOCK
+                    $tieneProductos = true;    
+                }            
             }else{
                 $tieneProductos = false;
-                $msg = 'hay un producto que no se ha registrado bien.';
+                $msg = 'Ingrese items';
                 break;
             }
+            $i++;
         }
         if(!$tieneProductos)
         {
@@ -251,24 +266,7 @@ class Guias extends CI_Controller
         // definamos un nombre para el archivo. No es necesario agregar la extension .pdf
         $filename = 'comprobante_pago';
         // generamos el PDF. Pasemos por encima de la configuración general y definamos otro tipo de papel
-        $this->pdfgenerator->generate($html, $filename, true,'A4','portrait');                    
-        /*escribimos archivo*/
-        /*$archivo = 'GUIA-'.$rsGuia->correlativo;
-        $rutaArchivoHtml = FCPATH.'files\pdf\\'.$archivo.'.html';
-        $rutaArchivoPdf = FCPATH.'files\pdf\\'.$archivo.'.pdf';
-        $file = fopen($rutaArchivoHtml,'w');
-        fwrite($file, $html);
-        fclose($file);
-        /*convertimos el html en pdf*/
-        /*exec('"'.FCPATH. 'wk\bin\wkhtmltopdf" '.$rutaArchivoHtml.' '.$rutaArchivoPdf);
-        header('Content-Type: application/pdf');
-        header('Content-Disposition: inline; filename="'.$archivo.'.pdf"');
-        readfile($rutaArchivoPdf);
-        /*aliminamos archivos creados html, pdf*/
-        /*unlink($rutaArchivoHtml);
-        unlink($rutaArchivoPdf);    */                    
-        
-        
+        $this->pdfgenerator->generate($html, $filename, true,'A4','portrait');                                    
     }
 
     public function descargarPdf_ticket($idGuia){

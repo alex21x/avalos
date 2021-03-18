@@ -5,7 +5,7 @@
     <head>
         <style>
             html, body {
-                margin: 0;
+                margin: 2px;
                 padding: 0;
                 font-family: sans-serif;
             }
@@ -39,13 +39,13 @@
                 RUC : <?php echo $empresa->ruc?><br><br>
                 <?php echo $empresa->domicilio_fiscal?><br>
                 -------------------------------------------------------<br><br>
-                <?php echo "Guia"; ?>&nbsp;&nbsp;<?php echo " ".str_pad($guia->correlativo, 8, "0", STR_PAD_LEFT)?><br><?php  echo "N°:". $guia->guia_serie."-".$guia->guia_numero;?><br>
+                <?php echo "Guia"; ?>&nbsp;&nbsp;<?php echo $guia->guia_serie."-".$guia->guia_numero;?><br>
                 Fecha/hora emision: <?php echo $guia->fecha_inicio_traslado; ?><br>
                 fecha/traslado    : <?php echo $guia->fecha_inicio_traslado; ?><br>
                 Vendedor : <?php echo $this->session->userdata('usuario'). " ". $this->session->userdata('apellido_paterno'); ?><br>
                 -------------------------------------------------------<br><br>
-                Cliente: <?php echo $cliente->razon_social?> <?php echo $comprobante->nombres?></br><?php if($nota->tipo_cliente_id==1):?>D.N.I: <?php else:?> R.U.C <?php endif?><?php echo "  ". $cliente->ruc?><br><br>
-                Direccion:<?php echo "  ". $proforma->prof_direccion?><br>
+                Cliente: <?php echo $cliente->razon_social?> <?php echo $comprobante->nombres?></br><?php if($nota->tipo_cliente_id==1):?>D.N.I: <?php else:?><br> R.U.C <?php endif?><?php echo "  ". $cliente->ruc?><br><br>
+                Direccion:<?php echo "  ". $cliente->domicilio1?><br>
                 -------------------------------------------------------<br>
                                   <strong>DATOS ENVIO</strong>  <br>
                 -------------------------------------------------------<br>
@@ -92,12 +92,13 @@
             -------------------------------------------------------<br>
             </p>
            
-        </span><br>
-        <div align="center" style="width: 90%" class="datos_totales" >
-            
-        </div>
+        </span><br><hr>
+        <div align="center" class="datos_totales" >
+            <?= $guia->firma_sunat;?>    
+        </div><br>
+        
         <div align="center" class="datos_totales">
             <h3><center><?= $this->session->userdata('empresa_pie_pagina')?></center></h3>
-        </div>
+        </div>        
     </body>
 </html>

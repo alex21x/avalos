@@ -161,7 +161,7 @@
                     <tbody>
                     <tr>
                         <td align="center" class="bold">Item</td>
-                        <td align="center" class="bold">Código</td>
+                        <!--<td align="center" class="bold">Código</td>-->
                         <td align="center" class="bold" width="300px">Descripción</td>
                         <td align="center" class="bold">Unidad</td>
                         <td align="center" class="bold">Cantidad</td>
@@ -169,16 +169,19 @@
                         <?php foreach($guia->detalles as $index => $item):?>
                         <tr class="border_top">
                             <td align="center"><?php echo (++$index)?></td>
-                            <td align="center"><?php echo $item->codigo?></td>
+                            <!--<td align="center"><?php echo $item->codigo?></td>-->
                             <td align="center"><?php echo $item->descripcion?></td>
-                            <td align="center"><?php echo $item->medida_codigo_unidad?></td>
+                            <td align="center"><?php echo $item->medida_nombre?></td>
                             <td align="center"><?php echo $item->cantidad?></td>
                         </tr>
                         <?php endforeach?>
                     </tbody>
                 </table></div>
 
-            <div>
+            <div><br><br><br><hr>
+                <div style="text-align: center;">
+                    <?= $guia->firma_sunat;?>
+                </div>    
             </div>
         </td>
     </tr>
