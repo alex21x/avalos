@@ -21,7 +21,8 @@ class Guias extends CI_Controller
         $this->load->model('productos_model'); 
         $this->load->model('ubigeo_inei_model');
         $this->load->helper('ayuda');  
-        $this->load->model('medida_model');      
+        $this->load->model('medida_model'); 
+        //$this->load->library('pdf');     
 
         $empleado_id = $this->session->userdata('empleado_id');
         $almacen_id = $this->session->userdata("almacen_id");
@@ -212,10 +213,12 @@ class Guias extends CI_Controller
         $rsDatos = $this->guias_model->getMainListDetail();
         sendJsonData($rsDatos);        
     }
-    public function decargarPdf($idGuia)
+    public function descargarPdf($idGuia)
     {
-        $rsGuia = $this->db->from("guias as guia")
+        $rsGuia = $this->db->select("gmts.descripcion modalidad,gmt.*,guia.*",FALSE)
+                            ->from("guias as guia")
                            ->join("guia_motivos_traslado as gmt", "guia.motivo_traslado=gmt.id")
+                           ->join("guia_modalidad_traslado as gmts", "guia.modalidad_traslado=gmts.id")
                            ->where("guia.id", $idGuia)
                            ->get()
                            ->row();
@@ -268,6 +271,62 @@ class Guias extends CI_Controller
         
     }
 
+    public function descargarPdf_ticket($idGuia){
+     
+      //var_dump($this->uri->segment(3));exit;
+      $rsGuia = $this->db->select("gmts.descripcion modalidad,gmt.*,guia.*",FALSE)
+                            ->from("guias as guia")
+                           ->join("guia_motivos_traslado as gmt", "guia.motivo_traslado=gmt.id")
+                           ->join("guia_modalidad_traslado as gmts", "guia.modalidad_traslado=gmts.id")
+                           ->where("guia.id", $idGuia)
+                           ->get()
+                           ->row();
+
+        /*formateamos fecha*/
+        $rsGuia->fecha_inicio_traslado = (new DateTime($rsGuia->fecha_inicio_traslado))->format('d/m/Y');
+
+         $rsDetalle = $this->db->from("guia_detalles as guiad")
+                              ->join("productos as prod", "prod.prod_id=guiad.producto_id","left")
+                              ->join("medida med", "guiad.medida_id=med.medida_id")
+                              ->where("guia_id", $idGuia)
+                              ->get()
+                              ->result();
+
+        $countItems = count($rsDetalle);
+        $ticketHeight =  $countItems*23;
+        $ticketHeight = ($ticketHeight > 440) ? $ticketHeight : 440;                                                        
+
+        $rsGuia->detalles = $rsDetalle;                                     
+
+        $rsEmpresa = $this->db->from("empresas")
+                              ->where("id", 1)
+                              ->get()
+                              ->row();
+
+        $rsCliente =  $this->db->from("clientes")
+                              ->where("ruc",$rsGuia->destinatario_ruc)
+                              ->get()
+                              ->row();                      
+                      //var_dump($rsCliente);exit;
+ 
+        $data = [
+                    "empresa" => $rsEmpresa,
+                    "guia"    => $rsGuia,
+                    "cliente" => $rsCliente,
+                ];
+
+        $html = $this->load->view("templates/guia_ticket.php",$data,true);
+
+        $this->load->library('pdf'); 
+        $this->pdf->loadHtml($html);
+        $this->pdf->setPaper(array(0,0,85,$ticketHeight),'portrait');
+        $this->pdf->render();
+        $this->pdf->stream("Proforma.NP-$idProforma.pdf",
+         array("Attachment"=>0)
+        );
+    }
+
+
     public function decargarPdf_matriz($idGuia)
     {
         $rsGuia = $this->db->from("guias as guia")
@@ -318,6 +377,7 @@ class Guias extends CI_Controller
         
     }
 
+     
 
     public function buscadorCliente() {
         $cliente = $this->input->get('term');

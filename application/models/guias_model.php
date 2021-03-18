@@ -174,39 +174,32 @@ class Guias_model extends CI_Model
         $i = 0;
         foreach($productosId as $index => $item)
         {
-          if($item!=0){
-            $rsProducto = $this->db->from("productos")
+           $rsProducto = $this->db->from("productos")
                                  ->where("prod_id", $item)
                                  ->get()
                                  ->row();
 
             if($precios[$index]==''){
               $precios[$index] = 0;
+               }
+
+          if($productosId[$i]!=0){
+           
+            $dataInsertDetallee ['producto_id'] =$item;
+            $dataInsertDetallee['descripcion'] =$rsProducto->prod_nombre;
+            $dataInsertDetallee ['codigo'] =$rsProducto->prod_codigo;
+            $dataInsertDetallee ['medida_id']= $rsProducto->prod_medida_id;
             } 
-
-          $dataInsertDetallee ['producto_id'] =$item;
-          $dataInsertDetallee['descripcion'] =$rsProducto->prod_nombre;
-          $dataInsertDetallee ['codigo'] =$rsProducto->prod_codigo;
-          $dataInsertDetallee ['cantidad'] =$cantidades[$index];
-          $dataInsertDetallee ['precio'] =$precios[$index];
-          $dataInsertDetallee ['guia_id'] =$idGuia;
-          $dataInsertDetallee ['medida_id']= $rsProducto->prod_medida_id;
-
-          }else{       
+          else{       
             $dataInsertDetallee ['producto_id'] =0;
             $dataInsertDetallee['descripcion'] =strtoupper($descripcion[$i]);
             $dataInsertDetallee ['codigo'] =0;
+            $dataInsertDetallee ['medida_id'] =$medida[$i];
+            }   
+
             $dataInsertDetallee ['cantidad'] =$cantidades[$index];
             $dataInsertDetallee ['precio'] =$precios[$index];
             $dataInsertDetallee ['guia_id'] =$idGuia;
-            $dataInsertDetallee ['medida_id'] = $medida[$i];
-
-        }   
-           //if ($i=2) {
-            // var_dump(expression)
-          // } else {
-             # code...
-          // }
            
    
        //   $dataInsertDetalle = [
@@ -451,8 +444,9 @@ class Guias_model extends CI_Model
             //boton eliminar
             $guia->boton_eliminar = '';
           }                  
-           $guia->boton_pdf = '<a href="'.base_url().'index.php/guias/decargarPdf/'.$guia->guia_id.'" target="_seld" ><img src="'.base_url().'/images/pdf.png" data-id="'.$guia->guia_id.'" class="descargar-pdf"></a>';
+           $guia->boton_pdf = '<a href="'.base_url().'index.php/guias/descargarPdf/'.$guia->guia_id.'" target="_seld" ><img src="'.base_url().'/images/pdf.png" data-id="'.$guia->guia_id.'" class="descargar-pdf"></a>';
             //$guia->boton_pdf = '<a href="'.base_url().'index.php/guias/decargarPdf_matriz/'.$guia->guia_id.'" target="_seld" ><img src="'.base_url().'/images/pdf.png" data-id="'.$guia->guia_id.'" class="descargar-pdf"></a>';
+            $guia->btn_ticket = '<a href="'.base_url().'index.php/guias/descargarPdf_ticket/'.$guia->guia_id.'" target="_seld" ><img src="'.base_url().'/images/pdf.png" data-id="'.$guia->guia_id.'" class="descargar-pdf"></a>';
         }      
 
         $datos = [

@@ -121,7 +121,9 @@
                     </tr>
                     <tr>
                         <td width="60%" align="left"><strong>Motivo Traslado:</strong>  <?php echo $guia->descripcion?> </td>
-                        <td width="40%" align="left"><strong>Modalidad de Transporte:</strong>   </td>
+                        <td width="40%" align="left"><strong>Modalidad de Transporte:</strong>   
+                                  <?php echo $guia->modalidad ?>
+                        </td>
                     </tr>
                     <tr>
                         <td width="60%" align="left"><strong>Peso Bruto Total (KG):</strong> <?php echo $guia->peso_total?> </td>
