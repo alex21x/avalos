@@ -58,7 +58,7 @@ echo $redireccion;
     <div class="col-md-11" style="text-align: center;">
          <?php                                                                                 
                                         $empresa = $this->db->select('id,empresa,foto')->from('empresas')->where('id',1)->get()->row();
-                                        echo "<img  src='".base_url()."images/sistemasunat.jpg' width='60%'>";
+                                        echo "<img  src='".base_url()."images/".$empresa->foto."' width='20%'>";
                                      ?> 
     </div>      
 

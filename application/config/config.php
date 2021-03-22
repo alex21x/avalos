@@ -1,7 +1,7 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-$ip = 'localhost';
+$ip = 'mundosoftperu.com';
 
 
 $config['base_url']	= 'http://'.$ip.'/avalos/';
