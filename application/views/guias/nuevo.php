@@ -206,8 +206,7 @@
                                             <option value="<?= $value['id']?>" <?= $SELECTED?>><?= $value['tipo_cliente']; ?></option>
                                             <?PHP }?>                            
                                     </select>       
-                                </div>
-                                <data id="data_cli"><input type="hidden" name="cliente_id" id="cliente_id"></data>
+                                </div>                                
                             </div>      
                             <div class="row">
                                 <div class="col-sm-12">
