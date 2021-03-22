@@ -48,8 +48,8 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['username'] = 'root';
-$db['default']['password'] = '';
+$db['default']['username'] = 'user_avalos';
+$db['default']['password'] = 'user_avalos';
 $db['default']['database'] = 'avalos';
 $db['default']['dbdriver'] = 'mysqli';
 
