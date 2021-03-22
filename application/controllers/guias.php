@@ -59,6 +59,7 @@ class Guias extends CI_Controller
         $data['ubigeo_inei'] = $this->ubigeo_inei_model->select();
         $data['tipo_clientes'] = $this->tipo_clientes_model->select();
         $data['guia'] = $this->guias_model->select($idGuia);
+        $data['medida'] = $this->medida_model->select();
         $this->accesos_model->menuGeneral();       
         $this->load->view('guias/nuevo', $data);
         $this->load->view('templates/footer');

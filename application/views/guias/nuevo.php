@@ -361,9 +361,27 @@
                                     </thead>                    
                                     <tbody> 
                                     <?php foreach($guia->detalles as $item):?>
-                                    <tr class="cont-item">
-                                        <td class="col-3"><input type="text" name="codigo" class="form-control" id="codigo" value="<?php echo $item->prod_codigo?>" disabled></td>
-                                        <td class="col-3"><input type="text" class="form-control descripcion-item" rows="2" id="descripcion" value="<?php echo $item->descripcion?>" name="descripcion[]"><div id="data_item"><input type="hidden" name="item_id[]" id="item_id" value="<?php echo $item->prod_id?>"></div></td>
+                                        <tr class="cont-item">
+                                        <?php if ($item->producto_id != 0) { ?>
+                                    <td class="col-3" colspan="2"><input type="text" name="codigo" class="form-control" id="codigo" value="<?php echo $item->prod_codigo?>" disabled></td>
+                                    <td style="display: none;"><input type="text" class="form-control" readonly id="medida" name="medida[]" value="<?php echo $item->medida_id?>"></td>
+                                    <td class="col-3"><input type="text" class="form-control descripcion-item" rows="2" id="descripcion" value="<?php echo $item->descripcion?>" name="descripcion[]"><div id="data_item"><input type="hidden" name="item_id[]" id="item_id" value="<?php echo $item->producto_id?>"></div></td>
+                                        <?php } else {  ?>
+                                    <td class="col-3"><input type="text" name="codigo" class="form-control" id="codigo" value="<?php echo $item->codigo?>" disabled></td>
+                                    <td class="col-sm-1">
+                                        <select class="form-control" id="medida" name="medida[]">
+                                             <option value="">Seleccione</option>
+                                            <?php foreach ($medida as $valor):?>
+                               <?php $selected =  ($valor->medida_id == $item->medida_id) ? 'SELECTED' : ''; ?>  
+                                        <option value="<?php echo $valor->medida_id;?>"
+                                        <?= $selected?>> <?php echo $valor->medida_nombre ?> 
+                                                </option>
+                                            <?php endforeach ?>                            
+                                         </select></td>
+                                     <td class="col-sm-3"><textarea class="form-control" rows="2" id="descripcion" name="descripcion[]" required=""><?PHP echo $item->descripcion;?></textarea><div id="data_prod"><input type="hidden" name="item_id[]" id="item_id" value="<?php echo $item->producto_id ?>"></div> </td>
+                                       <?php } ?>                                     
+                                       
+                                        
                                         <td class="col-3"><input type="number" id="cantidad" name="cantidad[]"  class="form-control cantidad" value="<?php echo $item->cantidad?>" ></td>
                                         <td class="col-3"><input type="number" id="precio" name="precio[]"  class="form-control precio" value="<?php echo $item->precio?>" ></td>
                                         <td class="eliminar"><span class="glyphicon glyphicon-remove-circle"></span></td>

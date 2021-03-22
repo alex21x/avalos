@@ -24,7 +24,8 @@ class Guias_model extends CI_Model
                            ->row(); 
         //detallte de la compra
         $rsDetalle = $this->db->from("guia_detalles as guiad")
-                              ->join("productos as prod", "prod.prod_id=guiad.producto_id")
+                              ->join("productos as prod", "prod.prod_id=guiad.producto_id","left")
+                              ->join("medida med", "guiad.medida_id=med.medida_id")
                               ->where("guia_id", $idGuia)
                               ->get()
                               ->result();
