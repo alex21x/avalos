@@ -44,7 +44,7 @@
                 fecha/traslado    : <?php echo $guia->fecha_inicio_traslado; ?><br>
                 Vendedor : <?php echo $this->session->userdata('usuario'). " ". $this->session->userdata('apellido_paterno'); ?><br>
                 -------------------------------------------------------<br><br>
-                Cliente: <?php echo $cliente->razon_social?> <?php echo $comprobante->nombres?></br><?php if($nota->tipo_cliente_id==1):?>D.N.I: <?php else:?><br> R.U.C <?php endif?><?php echo "  ". $cliente->ruc?><br><br>
+                Cliente: <?php echo $guia->destinatario_razon_social?> <?php echo $comprobante->nombres?></br><?php if($nota->tipo_cliente_id==1):?>D.N.I: <?php else:?><br> R.U.C <?php endif?><?php echo "  ". $guia->destinatario_ruc?><br><br>
                 Direccion:<?php echo "  ". $cliente->domicilio1?><br>
                 -------------------------------------------------------<br>
                                   <strong>DATOS ENVIO</strong>  <br>
